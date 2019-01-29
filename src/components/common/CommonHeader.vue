@@ -14,7 +14,7 @@
           <a href="#/">发布</a>
       </el-col>
       <el-col :span="1">
-          <a href="#/">登录</a>
+          <a href="#/Login">登录</a>
       </el-col>
     </el-row>
   </div>
