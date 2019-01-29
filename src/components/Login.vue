@@ -29,8 +29,8 @@
 
 <script>
 import CommonHeader from "./common/CommonHeader";
-//import APIss from "@/assets/js/common/axios/api.js";
-import APIss from "../assets/js/common/axios/api.js";
+import HTTP from "@/assets/js/common/axios1/http";
+import api from "@/assets/js/common/axios1/api";
 
 export default {
   data() {
@@ -45,14 +45,13 @@ export default {
   methods: {
     // 登录
     login: function() {
-      console.log(APIss.num);
-      //  API.login(this.account, this.password);
+      let param = {
+        account: this.account,
+        password: this.password
+      };
+      const res = HTTP.post(api.login, param);
+      console.log(res);
     }
-    // regester: function() {
-    //   this.$router.push({
-    //     path: "/"
-    //   });
-    // }
   }
 };
 </script>
