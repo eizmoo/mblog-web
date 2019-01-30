@@ -49,8 +49,18 @@ export default {
         account: this.account,
         password: this.password
       };
-      const res = HTTP.post(api.login, param);
-      console.log(res);
+      HTTP.post(api.login, param).then(result => {
+        if (result.success === false) {
+          this.$message.error(result.message);
+        } else {
+          // 存储全局token
+          window.localStorage["token"] = result.data;
+          // TODO 跳转到主页或被拦截页面
+          this.$router.push({
+            path: "/"
+          });
+        }
+      });
     }
   }
 };

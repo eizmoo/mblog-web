@@ -2,10 +2,14 @@
 
 import axios from 'axios'
 import qs from 'qs'
+import querystring from 'querystring'
 
 axios.interceptors.request.use(config => {
-  // loading
-  return config
+  // 验证登录
+  // if (localStorage.token) { //判断token是否存在
+  //   config.headers.Authorization = localStorage.token;  //将token设置成请求头
+  // }
+  return config;
 }, error => {
   return Promise.reject(error)
 })
@@ -16,7 +20,7 @@ axios.interceptors.response.use(response => {
   return Promise.resolve(error.response)
 })
 
-function checkStatus (response) {
+function checkStatus(response) {
   // loading
   // 如果http状态码正常，则直接返回数据
   if (response && (response.status === 200 || response.status === 304 || response.status === 400)) {
@@ -30,25 +34,28 @@ function checkStatus (response) {
   }
 }
 
-function checkCode (res) {
+function checkCode(res) {
   // 如果code异常(这里已经包括网络错误，服务器错误，后端抛出的错误)，可以弹出一个错误提示，告诉用户
   if (res.status === -404) {
     alert(res.msg)
   }
-  if (res.data && (!res.data.success)) {
-    alert(res.data.error_msg)
-  }
-  return res
+  // if (res.data && (!res.data.success)) {
+  //   // alert(res.data.error_msg)
+  //   alert(res.data.message)
+  // } else {
+  return (res.data)
 }
 
 export default {
-  post (url, data) {
+  post(url, data) {
     return axios({
       method: 'post',
-      baseURL: 'http://localhost:8898/mblog',
+      // baseURL: 'http://localhost:8898/mblog',
+      baseURL: '/mblog',
       url,
-      data: qs.stringify(data),
-      timeout: 10000,
+      // data: querystring.stringify(data),
+      data: data,
+      // timeout: 10000,
       headers: {
         'X-Requested-With': 'XMLHttpRequest',
         'Content-Type': 'application/json; charset=UTF-8'
@@ -59,15 +66,15 @@ export default {
       }
     ).then(
       (res) => {
-        console.log(res)
         return checkCode(res)
       }
     )
   },
-  get (url, params) {
+  get(url, params) {
     return axios({
       method: 'get',
-      baseURL: 'http://localhost:8898/mblog',
+      // baseURL: 'http://localhost:8898/mblog',
+      baseURL: '/mblog',
       url,
       params, // get 请求时带的参数
       timeout: 10000,
