@@ -19,7 +19,7 @@
       </el-col>
     </el-row>
     <el-row>
-      <el-button type="primary" @click="login">登录</el-button>
+        <el-button type="primary" @click="login">登录</el-button>
     </el-row>
     <el-row>
       <!-- <el-button type="primary" @click="regester">注册</el-button> -->

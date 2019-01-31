@@ -6,9 +6,10 @@ import querystring from 'querystring'
 
 axios.interceptors.request.use(config => {
   // 验证登录
-  // if (localStorage.token) { //判断token是否存在
-  //   config.headers.Authorization = localStorage.token;  //将token设置成请求头
-  // }
+  if (localStorage.token) {
+    //如果token是否存在，将token设置成请求头
+    config.headers.Authorization = localStorage.token;
+  }
   return config;
 }, error => {
   return Promise.reject(error)
