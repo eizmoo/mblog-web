@@ -11,7 +11,7 @@
         <a href="#/">归档</a>
       </el-col>
       <el-col :span="1">
-        <a href="#/edit">发布</a>
+        <a v-if="isLogin" href="#/article">发布</a>
       </el-col>
       <el-col :span="1">
         <a href="#/Login">登录</a>
@@ -21,7 +21,13 @@
 </template>
 
 <script>
-export default {};
+export default {
+  data() {
+    return {
+      isLogin: localStorage.token
+    };
+  }
+};
 </script>
 
 <style scoped>

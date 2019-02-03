@@ -1,6 +1,5 @@
 <template>
   <div>
-    <h1>this is edit</h1>
     <mavon-editor v-model="value"/>
   </div>
 </template>
