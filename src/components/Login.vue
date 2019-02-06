@@ -19,7 +19,7 @@
       </el-col>
     </el-row>
     <el-row>
-        <el-button type="primary" @click="login">登录</el-button>
+      <el-button type="primary" @click="login">登录</el-button>
     </el-row>
     <el-row>
       <!-- <el-button type="primary" @click="regester">注册</el-button> -->
@@ -51,7 +51,7 @@ export default {
       };
       HTTP.post(api.login, param).then(result => {
         if (result.success === false) {
-          this.$message.error(result.message);
+          // this.$message.error(result.message);
         } else {
           // 存储全局token
           window.localStorage["token"] = result.data;
