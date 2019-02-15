@@ -29,8 +29,8 @@
 
 <script>
 import CommonHeader from "./common/CommonHeader";
-import HTTP from "@/assets/js/common/axios1/http";
-import api from "@/assets/js/common/axios1/api";
+import { login } from "@/assets/js/common/axios2/api";
+import { setCookie } from "@/assets/js/common/cookie-util";
 
 export default {
   data() {
@@ -45,16 +45,13 @@ export default {
   methods: {
     // 登录
     login: function() {
-      let param = {
-        account: this.account,
-        password: this.password
-      };
-      HTTP.post(api.login, param).then(result => {
+      login(this.account, this.password).then(result => {
         if (result.success === false) {
-          // this.$message.error(result.message);
+          this.$message.error(result.message);
         } else {
           // 存储全局token
-          window.localStorage["token"] = result.data;
+          // window.localStorage["token"] = result.data;
+          setCookie("token", result.data, 3600);
           // TODO 跳转到主页或被拦截页面
           this.$router.push({
             path: "/"

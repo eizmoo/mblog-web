@@ -16,7 +16,7 @@
         <el-row>
           <ul>
             <li
-              v-for="(type,index) in tpyeList"
+              v-for="(type,index) in typeList"
               :key="index"
               @click="getTypeArticleList(type.id)"
             >{{type.name}}</li>
@@ -25,7 +25,7 @@
       </el-col>
       <el-col :span="4">
         <el-row>
-          <el-button type="success" icon="el-icon-plus" size="mini">新建文章</el-button>
+          <el-button type="success" icon="el-icon-plus" size="mini" @click="addArticle">新建文章</el-button>
         </el-row>
         <el-row>
           <ul>
@@ -38,7 +38,6 @@
         </el-row>
       </el-col>
       <el-col :span="16">
-        <!-- <router-view/> -->
         <mavon-editor
           style="min-height: $(windows).height"
           @change="saveOrigin"
@@ -51,11 +50,14 @@
 
     <el-dialog title="新增类别" :visible.sync="typeDialogDisable">
       <el-row style="text-align: center">
-        <el-col :span="20">
+        <el-col :span="10">
           <el-input v-model="typeName"></el-input>
         </el-col>
+        <el-col :span="10">
+          <el-input v-model="typeDesc"></el-input>
+        </el-col>
         <el-col :span="4">
-          <el-button @click="addType" type="primary" icon="el-icon-edit" circle></el-button>
+          <el-button @click="addType()" type="primary" icon="el-icon-edit" circle></el-button>
         </el-col>
       </el-row>
     </el-dialog>
@@ -63,13 +65,14 @@
 </template>
 
 <script>
-import HTTP from "@/assets/js/common/axios1/http";
-import api from "@/assets/js/common/axios1/api";
-
-import api1 from "@/assets/js/common/axios2/api";
-// import { num } from "@/assets/js/common/axios/api";
-1123
 import CommonHeader from "./common/CommonHeader";
+
+import {
+  getTypeListHttp,
+  addTypeHttp,
+  getTypeArticleListHttp,
+  getArticleOriginHttp
+} from "@/assets/js/common/axios2/api";
 
 export default {
   data() {
@@ -78,6 +81,7 @@ export default {
       articleList: "",
       content: "",
       typeName: "",
+      typeDesc: "",
       typeDialogDisable: false,
       toolbars: {
         bold: false, // 粗体
@@ -121,30 +125,35 @@ export default {
       this.$router.push("/");
     },
     getTypeList() {
-      HTTP.get(api.typeList).then(result => {
-        typeList = result.data;
+      getTypeListHttp().then(result => {
+        this.typeList = result.data;
       });
     },
     getTypeArticleList(id) {
-      HTTP.get(api.typeArticle + id).then(result => {
-        articleList = result.data;
+      getTypeArticleListHttp(id).then(result => {
+        this.articleList = result.data;
       });
     },
     getArticle(id) {
-      HTTP.get(api.origin + id).then(result => {
-        content = result.data.origin;
+      getArticleOriginHttp(id).then(result => {
+        this.content = result.data.origin;
       });
     },
-    saveOrigin() {
-      HTTP.put(api.saveOrigin);
-    },
+    // saveOrigin() {
+    //   HTTP.put(api.saveOrigin);
+    // },
     addType() {
-      console.log(api1.sayOk());
+      addTypeHttp(this.typeName, this.typeDesc).then(result => {
+        this.$message(result.message);
+      });
+    },
+    addArticle() {
+      addArticle
     }
   },
   mounted() {
     // 类别list
-    // this.getTypeList();
+    this.getTypeList();
   },
   components: {
     CommonHeader

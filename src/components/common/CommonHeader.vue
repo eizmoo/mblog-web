@@ -10,10 +10,10 @@
       <el-col :span="1">
         <a href="#/">归档</a>
       </el-col>
-      <el-col :span="1">
-        <a v-if="isLogin" href="#/article">发布</a>
+      <el-col v-if="isLogin" :span="1">
+        <a href="#/article">发布</a>
       </el-col>
-      <el-col :span="1">
+      <el-col v-if="!isLogin" :span="1">
         <a href="#/Login">登录</a>
       </el-col>
     </el-row>
@@ -21,10 +21,12 @@
 </template>
 
 <script>
+import { getCookie } from "@/assets/js/common/cookie-util.js";
+
 export default {
   data() {
     return {
-      isLogin: localStorage.token
+      isLogin: getCookie("token") != null
     };
   }
 };
