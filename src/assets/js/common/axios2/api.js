@@ -31,7 +31,17 @@ export const getTypeArticleListHttp = (id) => {
 }
 //展示指定文章的origin
 export const getArticleOriginHttp = (id) => {
-    return get()
+    return get(`${base_api}/articles/${id}/origin`, {})
+}
+export const addArticleHttp = (typeId) => {
+    return post(`${base_api}/articles/`, {
+        type: typeId
+    })
+}
+export const saveOriginHttp = (id, origin) => {
+    return put(`${base_api}/articles/${id}/`, {
+        content: origin
+    })
 }
 
 // 基本用法

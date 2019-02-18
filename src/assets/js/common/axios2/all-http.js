@@ -1,11 +1,17 @@
 import axios from 'axios';
 import router from '@/router';
+
+import { getCookie } from '@/assets/js/common/cookie-util.js'
 // 创建axios实例
 const service = axios.create({
   timeout: 30000 // 请求超时时间                                   
 })
 // 添加request拦截器 
 service.interceptors.request.use(config => {
+  let token = getCookie("token")
+  if (token != null) {
+    config.headers.Authorization = token
+  }
   return config
 }, error => {
   Promise.reject(error)

@@ -38,11 +38,11 @@
         </el-row>
       </el-col>
       <el-col :span="16">
+        <!-- @change="saveOrigin" -->
         <mavon-editor
           style="min-height: $(windows).height"
-          @change="saveOrigin"
           :toolbars="toolbars"
-          :subfield="false"
+          :subfield="clientWidth"
           v-model="content"
         />
       </el-col>
@@ -71,7 +71,9 @@ import {
   getTypeListHttp,
   addTypeHttp,
   getTypeArticleListHttp,
-  getArticleOriginHttp
+  getArticleOriginHttp,
+  addArticleHttp,
+  saveOriginHttp
 } from "@/assets/js/common/axios2/api";
 
 export default {
@@ -83,6 +85,9 @@ export default {
       typeName: "",
       typeDesc: "",
       typeDialogDisable: false,
+      currentType: "",
+      currentArticle: "",
+      clientWidth: document.body.clientWidth > 1080,
       toolbars: {
         bold: false, // 粗体
         italic: true, // 斜体
@@ -121,34 +126,53 @@ export default {
     };
   },
   methods: {
+    //返回主页
     backMain() {
       this.$router.push("/");
     },
+    // 获取类型列表
     getTypeList() {
       getTypeListHttp().then(result => {
         this.typeList = result.data;
       });
     },
+    //指定类型的文章列表
     getTypeArticleList(id) {
+      this.currentType = id;
       getTypeArticleListHttp(id).then(result => {
         this.articleList = result.data;
+        if (this.articleList != null) {
+          this.getArticle(this.articleList[0].id);
+        }
       });
     },
+    // 获取指定文章的origin
     getArticle(id) {
+      this.currentArticle = id;
       getArticleOriginHttp(id).then(result => {
         this.content = result.data.origin;
       });
     },
-    // saveOrigin() {
-    //   HTTP.put(api.saveOrigin);
-    // },
+    // 保存origin
+    saveOrigin() {
+      if (this.currentArticle != "") {
+        console.log("changed");
+        // saveOriginHttp().then(result => {
+        // console.log(result);
+        // });
+      }
+    },
+    // 新增类型
     addType() {
       addTypeHttp(this.typeName, this.typeDesc).then(result => {
         this.$message(result.message);
       });
     },
+    // 新增文章
     addArticle() {
-      addArticle
+      addArticleHttp(this.currentType).then(result => {
+        this.getTypeArticleList(this.currentType);
+      });
     }
   },
   mounted() {
