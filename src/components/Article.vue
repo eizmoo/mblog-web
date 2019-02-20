@@ -40,6 +40,7 @@
       <el-col :span="16">
         <!-- @change="saveOrigin" -->
         <mavon-editor
+          @change="saveOrigin"
           style="min-height: $(windows).height"
           :toolbars="toolbars"
           :subfield="clientWidth"
@@ -87,6 +88,7 @@ export default {
       typeDialogDisable: false,
       currentType: "",
       currentArticle: "",
+      articleSwitch: false,
       clientWidth: document.body.clientWidth > 1080,
       toolbars: {
         bold: false, // 粗体
@@ -141,7 +143,7 @@ export default {
       this.currentType = id;
       getTypeArticleListHttp(id).then(result => {
         this.articleList = result.data;
-        if (this.articleList != null) {
+        if (this.articleList != null && this.articleList.length > 0) {
           this.getArticle(this.articleList[0].id);
         }
       });
@@ -149,14 +151,19 @@ export default {
     // 获取指定文章的origin
     getArticle(id) {
       this.currentArticle = id;
+      this.articleSwitch = true;
       getArticleOriginHttp(id).then(result => {
-        this.content = result.data.origin;
+        if (result.data != null) {
+          this.content = result.data.origin;
+        } else {
+          this.content = "";
+        }
       });
     },
     // 保存origin
     saveOrigin() {
-      if (this.currentArticle != "") {
-        console.log("changed");
+      if (this.currentArticle != "" && !this.articleSwitch) {
+        console.log("changed  " + this.currentArticle);
         // saveOriginHttp().then(result => {
         // console.log(result);
         // });

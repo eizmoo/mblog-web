@@ -51,7 +51,7 @@ export default {
         } else {
           // 存储全局token
           // window.localStorage["token"] = result.data;
-          setCookie("token", result.data, 3600);
+          setCookie("token", result.data, 120 * 60 * 1000);
           // TODO 跳转到主页或被拦截页面
           this.$router.push({
             path: "/"

@@ -8,10 +8,10 @@ export function getCookie(name) {
 }
 
 //设置cookie,增加到vue实例方便全局调用
-export function setCookie(c_name, value, expiredays) {
+export function setCookie(c_name, value, expiretimes) {
     var exdate = new Date();
-    exdate.setDate(exdate.getDate() + expiredays);
-    document.cookie = c_name + "=" + escape(value) + ((expiredays == null) ? "" : ";expires=" + exdate.toGMTString());
+    exdate.setTime(exdate.getTime() + expiretimes);
+    document.cookie = c_name + "=" + escape(value) + ((expiretimes == null) ? "" : ";expires=" + exdate.toGMTString());
 };
 
 //删除cookie
